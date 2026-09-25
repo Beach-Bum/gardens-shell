@@ -2,18 +2,24 @@
 
 A **Kittens Game–style incremental shell** themed around gardening, with plug-in production systems (Garden, Farming, Mining, Astrophysics) and side systems (Village, Science, Workshop, Trade, Time, Achievements, Stats).
 
-Open `index.html` in a browser — no build step, no server required.
+## Play
 
-## Quick start
+The complete game is a single file: **`index.html`** (open in any browser — no build step).
+
+If this GitHub tree still has a short placeholder `index.html`, use the full file from the project package that was generated with this repo (same folder layout as below), then:
 
 ```bash
-# from this folder
-open index.html
-# or
-python3 -m http.server 8080
+git clone https://github.com/Beach-Bum/gardens-shell.git
+cd gardens-shell
+# copy the full index.html into place, then:
+git add index.html reference/
+git commit -m "Add full playable shell and UI reference"
+git push
 ```
 
-## Repo layout
+Or simply open the local package’s `index.html` directly.
+
+## Repo layout (shell)
 
 ```
 gardens-shell/
@@ -21,45 +27,31 @@ gardens-shell/
 ├── README.md
 ├── docs/
 │   └── ARCHITECTURE.md        # How systems plug into the shell
+├── css/                      # Optional future extract
+├── js/                       # Optional future extract
 └── reference/
-    ├── ui-component-catalog.html   # Design tokens + UI components
-    ├── full-screen-demo.html       # Dense layout reference
-    └── systems-demo.html           # Minimal multi-system demo
+    ├── ui-component-catalog.html
+    ├── full-screen-demo.html
+    └── systems-demo.html
 ```
 
 ## Shell contract
 
-The **shell** owns:
+The **shell** owns layout, tick, effects bag, save/load, and tabs.  
+A **system pack** only provides data (`SYSTEMS[]`: buildings, filters, unlock).
 
-| Concern | Responsibility |
-|--------|----------------|
-| Layout | Resources left · actions center · log right · header |
-| Tick | Fixed timestep, effects bag, unlock checks |
-| Save | `localStorage` run save + meta (legacy / achievements) |
-| Tabs | Production systems + side tabs |
-| UI patterns | Buttons (on/val, sell, toggle), filters, resource table |
+Adding a system = append to `SYSTEMS[]` + resources in `RESOURCE_DEFS`. No special-case tick logic.
 
-A **system pack** only provides data:
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-- `id`, `label`, `blurb`
-- `unlock` — when the tab appears
-- `filters` — All · Available · domain filters
-- `buildings[]` — prices, effects, optional `togglable` / unlock
+## Progression
 
-Adding a system = append to `SYSTEMS[]` and add resources to `RESOURCE_DEFS`. No special-case tick logic.
-
-## Progression (default content)
-
-1. **Garden** — plant / water / knowledge  
-2. **Farming** — grain, livestock (25 knowledge)  
-3. **Mining** — stone, ore, metal (45 knowledge)  
-4. **Astrophysics** — data, fuel, insight (100 knowledge + metal)  
-5. **Time** — chronoboost, prestige → legacy seeds  
+1. Garden → knowledge  
+2. Farming (25 knowledge)  
+3. Mining (45 knowledge)  
+4. Astrophysics (100 knowledge + metal)  
+5. Time / prestige → legacy seeds  
 
 ## Design reference
 
-Use `reference/ui-component-catalog.html` as the single visual source of truth (tokens, buttons, tables, cards, log, dialogs). Keep new screens composed from those patterns.
-
-## License / notes
-
-Original shell and content for the Gardens project. Patterns inspired by common incremental-game architecture; not a copy of any specific commercial title's assets or balance.
+`reference/ui-component-catalog.html` is the visual source of truth (tokens, buttons, tables, log).
